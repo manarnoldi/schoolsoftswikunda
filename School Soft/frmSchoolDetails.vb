@@ -25,6 +25,7 @@ Public Class frmSchoolDetails
                 Me.txtTelNumber.Text = IIf(DBNull.Value.Equals(reader!tel), "", reader!tel)
                 Me.txtEmailAddress.Text = IIf(DBNull.Value.Equals(reader!emailAddress), "", reader!emailAddress)
                 Me.txtInitials.Text = IIf(DBNull.Value.Equals(reader!initials), "", reader!initials)
+                Me.txtSchoolMotto.Text = IIf(DBNull.Value.Equals(reader!schoolMotto), "", reader!schoolMotto)
             End While
         End If
         reader.Close()
@@ -102,10 +103,12 @@ Public Class frmSchoolDetails
             cmdSchDetails.Parameters.AddWithValue("@initials", Me.txtInitials.Text.Trim)
             cmdSchDetails.Parameters.AddWithValue("@dateOfreg", Date.Now)
             cmdSchDetails.Parameters.AddWithValue("@updateInsert", updateinsert)
+            cmdSchDetails.Parameters.AddWithValue("@schoolMotto", Me.txtSchoolMotto.Text.Trim)
             Dim pic As SqlParameter = New SqlParameter("@logo", SqlDbType.Image)
             pic.Value = img
             cmdSchDetails.Parameters.Add(pic)
         Catch ex As Exception
+            MessageBox.Show(ex.Message.ToString(), "Data Error")
         Finally
         End Try
 
@@ -119,6 +122,7 @@ Public Class frmSchoolDetails
                 Me.txtSchAddress.Text = ""
                 Me.txtEmailAddress.Text = ""
                 Me.txtInitials.Text = ""
+                Me.txtSchoolMotto.Text = ""
                 Me.txtEmailAddress.Tag = Nothing
                 Me.pbImage.Image = Nothing
                 RetrieveImgAC()
@@ -148,6 +152,9 @@ Public Class frmSchoolDetails
             Exit Sub
         ElseIf Me.txtTownName.Text.Trim.Length <= 0 Then
             MsgBox("Missing Town Name", MsgBoxStyle.Exclamation + MsgBoxStyle.ApplicationModal + MsgBoxStyle.OkOnly, "Error Detected")
+            Exit Sub
+        ElseIf Me.txtSchoolMotto.Text.Trim.Length <= 0 Then
+            MsgBox("Missing School Motto Name", MsgBoxStyle.Exclamation + MsgBoxStyle.ApplicationModal + MsgBoxStyle.OkOnly, "Error Detected")
             Exit Sub
         End If
         dbconnection()
